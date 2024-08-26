@@ -1,7 +1,13 @@
 import openai
 import streamlit as st
+import requests
 
-openai.api_key = st.secrets["api_key"]
+
+headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {st.secrets["api_key"]}"
+        }
+
 
 st.markdown("""#### 當你在為未來的重要目標（如購房、退休或子女教育）存錢時，你通常會怎麼規劃這筆資金？你會更注重資金的安全，還是希望能夠獲得更高的回報？""")
 with st.popover("See Q1 keywords"):
@@ -66,13 +72,33 @@ if prompt_1:
 
     Ｌ："""
 
-    completion = openai.ChatCompletion.create(
-        model="gpt-4o",
-        messages = [{"role": "user", "content": prompt}],
-        max_tokens = 2048,
-        temperature = 0.8)
+    payload = {
+        "model": "gpt-4o-mini",
+        "messages": [
+            {
+            "role": "user",
+            "content": [
+                {
+                "type": "text",
+                "text": prompt
+                },
+            ]
+            }
+        ],
+        "max_tokens": 300
+        }
+    
+    response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
 
-    message_1 = completion.choices[0].message.content
+    message_1 = response.json()['choices'][0]['message']['content']
+
+    # completion = openai.ChatCompletion.create(
+    #     model="gpt-4o",
+    #     messages = [{"role": "user", "content": prompt}],
+    #     max_tokens = 2048,
+    #     temperature = 0.8)
+
+    # message_1 = completion.choices[0].message.content
 
 
     with col1:
@@ -105,14 +131,33 @@ if prompt_2:
 Ａ：{prompt_2}
 
 Ｌ："""
+    payloadd = {
+    "model": "gpt-4o-mini",
+    "messages": [
+        {
+        "role": "user",
+        "content": [
+            {
+            "type": "text",
+            "text": promptt
+            },
+        ]
+        }
+    ],
+    "max_tokens": 300
+    }
 
-    completion = openai.ChatCompletion.create(
-        model="gpt-4o",
-        messages = [{"role": "user", "content": promptt}],
-        max_tokens = 2048,
-        temperature = 0.8)
+    response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payloadd)
 
-    message_2 = completion.choices[0].message.content
+    message_2 = response.json()['choices'][0]['message']['content']
+
+    # completion = openai.ChatCompletion.create(
+    #     model="gpt-4o",
+    #     messages = [{"role": "user", "content": promptt}],
+    #     max_tokens = 2048,
+    #     temperature = 0.8)
+
+    # message_2 = completion.choices[0].message.content
 
     with col2:
         # st.caption('Q2判別')
@@ -143,14 +188,34 @@ if prompt_3:
 
 Ａ：{prompt_3}
 Ｌ："""
+    
+    payloaddd = {
+    "model": "gpt-4o-mini",
+    "messages": [
+        {
+        "role": "user",
+        "content": [
+            {
+            "type": "text",
+            "text": prompttt
+            },
+        ]
+        }
+    ],
+    "max_tokens": 300
+    }
 
-    completion = openai.ChatCompletion.create(
-        model="gpt-4o",
-        messages = [{"role": "user", "content": prompttt}],
-        max_tokens = 2048,
-        temperature = 0.8)
+    response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payloaddd)
 
-    message_3 = completion.choices[0].message.content
+    message_3= response.json()['choices'][0]['message']['content']
+
+    # completion = openai.ChatCompletion.create(
+    #     model="gpt-4o",
+    #     messages = [{"role": "user", "content": prompttt}],
+    #     max_tokens = 2048,
+    #     temperature = 0.8)
+
+    # message_3 = completion.choices[0].message.content
 
     with col3:
         # st.caption('Q3判別')
